@@ -1,7 +1,19 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.8)
 project(reversi)
 
-include_directories(include/)
+set(CMAKE_CXX_STANDARD 14)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin/)
-add_executable (reversi src/main.cpp)
+set(include_dir "include")
+set(src_dir "src")
+
+file(GLOB include_files "${include_dir}/*.h")
+file(GLOB source_files "${src_dir}/*.cpp")
+
+set(SOURCE_FILES
+        ${include_files}
+        ${source_files}
+        )
+
+include_directories(${include_dir})
+
+add_executable(reversi ${SOURCE_FILES})
