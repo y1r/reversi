@@ -86,6 +86,16 @@ public:
         return ok;
     }
 
+    auto count(disk disk) {
+        auto sum = 0;
+
+        for (const auto &yline : board)
+            for (const auto &y: yline)
+                if (y == disk) sum++;
+
+        return sum;
+    }
+
     bool inRange(int x, int y) {
         return 0 <= x && x < N && 0 <= y && y < N;
     }

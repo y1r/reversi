@@ -15,6 +15,8 @@ int main(void) {
                 place = !board.placeDisk(x, y);
             }
         }
+        cout << "BLACK:" << board.count(reversi::disk::BLACK) << endl;
+        cout << "WHITE:" << board.count(reversi::disk::WHITE) << endl;
         reversi::utils::print_game_board(board);
         cout << endl;
     }
