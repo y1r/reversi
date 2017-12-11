@@ -10,10 +10,9 @@ void print_game_board(const reversi::game_board<N> &board) {
     using std::cout;
     using std::endl;
 
-    for (const auto &yline : board.getBoard()) {
-        for (const auto &y : yline) {
-            cout << (int) y;
-        }
+    for (int y = 0; y < N; y++) {
+        for (int x = 0; x < N; x++)
+            cout << (int) board.getBoard()[x][y];
         cout << endl;
     }
 }
