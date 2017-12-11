@@ -1,0 +1,3 @@
+class Hoge {
+    int num;
+};
