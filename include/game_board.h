@@ -51,50 +51,64 @@ public:
 
     auto next_disk() const { return next_disk_; }
 
-    bool PlaceDisk(const int x, const int y) {
+    bool CanPlaceDisk(const int x, const int y) const {
         if (board_[x][y] != Disk::EMPTY) return false;
 
-        bool ok = false;
-        using std::cout;
-        using std::endl;
-
         for (int i = 0; i < dxs.size(); i++) {
-            auto dx = dxs[i];
-            auto dy = dys[i];
-
-            auto xx = x + dx;
-            auto yy = y + dy;
+            auto xx = x + dxs[i];
+            auto yy = y + dys[i];
 
             if (!InRange(xx, yy)) continue;
 
             bool another_disk_is_found = false;
 
             while (InRange(xx, yy) && board_[xx][yy] == InversedDisk(next_disk_)) {
-                xx += dx;
-                yy += dy;
+                xx += dxs[i];
+                yy += dys[i];
                 another_disk_is_found = true;
             }
 
             if (another_disk_is_found && InRange(xx, yy) && board_[xx][yy] == next_disk_) {
-                // can place
-                ok = true;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    void PlaceDisk(const int x, const int y) {
+        assert(board_[x][y] == Disk::EMPTY);
+
+        for (int i = 0; i < dxs.size(); i++) {
+            auto xx = x + dxs[i];
+            auto yy = y + dys[i];
+
+            if (!InRange(xx, yy)) continue;
+
+            bool another_disk_is_found = false;
+
+            while (InRange(xx, yy) && board_[xx][yy] == InversedDisk(next_disk_)) {
+                xx += dxs[i];
+                yy += dys[i];
+                another_disk_is_found = true;
+            }
+
+            if (another_disk_is_found && InRange(xx, yy) && board_[xx][yy] == next_disk_) {
                 // swap disks
-
                 while (xx != x || yy != y) {
-
                     board_[xx][yy] = next_disk_;
-                    xx -= dx;
-                    yy -= dy;
+                    xx -= dxs[i];
+                    yy -= dys[i];
                 }
             }
         }
 
-        if (ok) {
-            board_[x][y] = next_disk_;
-            next_disk_ = InversedDisk(next_disk_);
-        }
+        board_[x][y] = next_disk_;
+        next_disk_ = InversedDisk(next_disk_);
+    }
 
-        return ok;
+    void Skip() {
+        next_disk_ = InversedDisk(next_disk_);
     }
 
     auto count(Disk disk) const {
@@ -112,8 +126,8 @@ private:
         return 0 <= x && x < N && 0 <= y && y < N;
     }
 
-    const std::array<int, 8> dxs = {-1, 0, 1, 1, 1, 0, -1, -1};
-    const std::array<int, 8> dys = {-1, -1, -1, 0, 1, 1, 1, 0};
+    static inline constexpr std::array<int, 8> dxs = {-1, 0, 1, 1, 1, 0, -1, -1};
+    static inline constexpr std::array<int, 8> dys = {-1, -1, -1, 0, 1, 1, 1, 0};
 
     std::array<std::array<Disk, N>, N> board_;
     Disk next_disk_ = Disk::BLACK;
