@@ -86,7 +86,7 @@ public:
         return ok;
     }
 
-    auto count(disk disk) {
+    auto count(disk disk) const {
         auto sum = 0;
 
         for (const auto &yline : board)
@@ -96,6 +96,7 @@ public:
         return sum;
     }
 
+private:
     bool inRange(int x, int y) {
         return 0 <= x && x < N && 0 <= y && y < N;
     }
@@ -110,7 +111,6 @@ public:
     const std::array<int, 8> dxs = {-1, 0, 1, 1, 1, 0, -1, -1};
     const std::array<int, 8> dys = {-1, -1, -1, 0, 1, 1, 1, 0};
 
-private:
     std::array<std::array<disk, N>, N> board;
     disk next = disk::BLACK;
 };

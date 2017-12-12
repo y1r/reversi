@@ -1,6 +1,7 @@
 #include <iostream>
 #include <game_board.h>
 #include <utils.h>
+#include <algorithms/random.h>
 
 using namespace std;
 #define N 8
@@ -8,17 +9,13 @@ using namespace std;
 int main(void) {
     reversi::game_board<N> board;
 
-    for (int i = 0; i < 60; i++) {
-        bool place = true;
-        for (int y = 0; y < N && place; y++) {
-            for (int x = 0; x < N && place; x++) {
-                place = !board.placeDisk(x, y);
-            }
-        }
-        cout << "BLACK:" << board.count(reversi::disk::BLACK) << endl;
-        cout << "WHITE:" << board.count(reversi::disk::WHITE) << endl;
+    reversi::utils::print_game_board(board);
+
+    for (int i = 0; i < N * N - 4; i++) {
+        auto random = reversi::algorithm::random<N>();
+        random(board);
+
         reversi::utils::print_game_board(board);
-        cout << endl;
     }
 
     return 0;
