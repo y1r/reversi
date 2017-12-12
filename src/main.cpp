@@ -1,21 +1,21 @@
 #include <iostream>
-#include <game_board.h>
 #include <utils.h>
-#include <algorithms/random.h>
+
+#include "algorithms/random.h"
 
 using namespace std;
 #define N 8
 
 int main(void) {
-    reversi::game_board<N> board;
+    reversi::GameBoard<N> board;
 
-    reversi::utils::print_game_board(board);
+    reversi::utils::PrintGameBoard(board);
 
     for (int i = 0; i < N * N - 4; i++) {
-        auto random = reversi::algorithm::random<N>();
+        auto random = reversi::algorithm::Random<N>();
         random(board);
 
-        reversi::utils::print_game_board(board);
+        reversi::utils::PrintGameBoard(board);
     }
 
     return 0;

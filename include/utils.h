@@ -3,31 +3,32 @@
 
 #include <iostream>
 #include "game_board.h"
+
 namespace reversi {
 namespace utils {
 template<size_t N>
-void print_game_board(const reversi::game_board<N> &game_board) {
+void PrintGameBoard(const reversi::GameBoard<N> &game_board) {
     using std::cout;
     using std::endl;
 
-    const auto &board = game_board.getBoard();
+    const auto &board = game_board.board();
 
     for (int y = 0; y < N; y++) {
         for (int x = 0; x < N; x++) {
             auto status = board[x][y];
             switch (status) {
-                case disk::BLACK:cout << "●";
+                case Disk::BLACK:cout << "●";
                     break;
-                case disk::WHITE:cout << "○";
+                case Disk::WHITE:cout << "○";
                     break;
-                case disk::EMPTY:cout << " ";
+                case Disk::EMPTY:cout << " ";
                     break;
             }
         }
         cout << endl;
     }
-    cout << "BLACK:" << game_board.count(reversi::disk::BLACK) << endl;
-    cout << "WHITE:" << game_board.count(reversi::disk::WHITE) << endl << endl;
+    cout << "BLACK:" << game_board.count(reversi::Disk::BLACK) << endl;
+    cout << "WHITE:" << game_board.count(reversi::Disk::WHITE) << endl << endl;
 }
 
 }

@@ -2,19 +2,19 @@
 #define REVERSI_RANDOM_H
 
 #include <cstddef>
-#include <game_board.h>
+#include "game_board.h"
 namespace reversi {
 namespace algorithm {
 template<size_t N>
-class random {
+class Random {
 public:
-    bool operator()(game_board<N> &board) {
+    bool operator()(GameBoard<N> &board) {
         bool place = false;
 
-        // TODO(y1r): 全探索->合法手を差分で管理したほうが良い？
+        // TODO(y1r): 合法手を差分で管理したほうが良い？
         for (int y = 0; y < N && !place; y++) {
             for (int x = 0; x < N && !place; x++) {
-                place = board.placeDisk(x, y);
+                place = board.PlaceDisk(x, y);
             }
         }
 

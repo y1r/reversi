@@ -3,16 +3,27 @@
 
 #include <array>
 #include <cassert>
+#include <vector>
+#include <iostream>
 
 namespace reversi {
-enum class disk {
-    BLACK, WHITE, EMPTY
+enum class Disk {
+    BLACK = 0,
+    WHITE = 1,
+    EMPTY = 2
 };
 
+Disk InversedDisk(Disk disk) {
+    assert(disk != Disk::EMPTY);
+
+    if (disk == Disk::BLACK) return Disk::WHITE;
+    else return Disk::BLACK;
+}
+
 template<size_t N>
-class game_board {
+class GameBoard {
 public:
-    game_board() {
+    GameBoard() {
         // 左上の座標
         auto lu_x = N / 2 - 1;
         auto lu_y = N / 2 - 1;
@@ -22,26 +33,26 @@ public:
          * 黒白
         */
 
-        for (auto &yline: board) {
+        for (auto &yline: board_) {
             for (auto &y : yline) {
-                y = disk::EMPTY;
+                y = Disk::EMPTY;
             }
         }
 
-        board[lu_x][lu_y] = disk::BLACK;
-        board[lu_x + 1][lu_y] = disk::WHITE;
-        board[lu_x][lu_y + 1] = disk::WHITE;
-        board[lu_x + 1][lu_y + 1] = disk::BLACK;
+        board_[lu_x][lu_y] = Disk::BLACK;
+        board_[lu_x + 1][lu_y] = Disk::WHITE;
+        board_[lu_x][lu_y + 1] = Disk::WHITE;
+        board_[lu_x + 1][lu_y + 1] = Disk::BLACK;
     }
 
-    const auto &getBoard() const {
-        return board;
+    const auto &board() const {
+        return board_;
     }
 
-    auto getNext() const { return next; }
+    auto next_disk() const { return next_disk_; }
 
-    bool placeDisk(const int x, const int y) {
-        if (board[x][y] != disk::EMPTY) return false;
+    bool PlaceDisk(const int x, const int y) {
+        if (board_[x][y] != Disk::EMPTY) return false;
 
         bool ok = false;
         using std::cout;
@@ -54,24 +65,24 @@ public:
             auto xx = x + dx;
             auto yy = y + dy;
 
-            if (!inRange(xx, yy)) continue;
+            if (!InRange(xx, yy)) continue;
 
             bool another_disk_is_found = false;
 
-            while (inRange(xx, yy) && board[xx][yy] == getInverse(next)) {
+            while (InRange(xx, yy) && board_[xx][yy] == InversedDisk(next_disk_)) {
                 xx += dx;
                 yy += dy;
                 another_disk_is_found = true;
             }
 
-            if (another_disk_is_found && inRange(xx, yy) && board[xx][yy] == next) {
+            if (another_disk_is_found && InRange(xx, yy) && board_[xx][yy] == next_disk_) {
                 // can place
                 ok = true;
                 // swap disks
 
                 while (xx != x || yy != y) {
 
-                    board[xx][yy] = next;
+                    board_[xx][yy] = next_disk_;
                     xx -= dx;
                     yy -= dy;
                 }
@@ -79,17 +90,17 @@ public:
         }
 
         if (ok) {
-            board[x][y] = next;
-            next = getInverse(next);
+            board_[x][y] = next_disk_;
+            next_disk_ = InversedDisk(next_disk_);
         }
 
         return ok;
     }
 
-    auto count(disk disk) const {
+    auto count(Disk disk) const {
         auto sum = 0;
 
-        for (const auto &yline : board)
+        for (const auto &yline : board_)
             for (const auto &y: yline)
                 if (y == disk) sum++;
 
@@ -97,22 +108,15 @@ public:
     }
 
 private:
-    bool inRange(int x, int y) {
+    inline bool InRange(int x, int y) const {
         return 0 <= x && x < N && 0 <= y && y < N;
-    }
-
-    disk getInverse(disk disk) {
-        assert(disk != disk::EMPTY);
-
-        if (disk == disk::BLACK) return disk::WHITE;
-        else return disk::BLACK;
     }
 
     const std::array<int, 8> dxs = {-1, 0, 1, 1, 1, 0, -1, -1};
     const std::array<int, 8> dys = {-1, -1, -1, 0, 1, 1, 1, 0};
 
-    std::array<std::array<disk, N>, N> board;
-    disk next = disk::BLACK;
+    std::array<std::array<Disk, N>, N> board_;
+    Disk next_disk_ = Disk::BLACK;
 };
 }
 
