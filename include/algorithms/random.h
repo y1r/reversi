@@ -4,21 +4,22 @@
 #include <cstddef>
 #include "game_board.h"
 namespace reversi {
-namespace algorithm {
+namespace algorithms {
 template<size_t N>
 class Random {
 public:
     bool operator()(GameBoard<N> &board) {
-        bool place = false;
-
         // TODO(y1r): 合法手を差分で管理したほうが良い？
-        for (int y = 0; y < N && !place; y++) {
-            for (int x = 0; x < N && !place; x++) {
-                place = board.PlaceDisk(x, y);
+        for (int y = 0; y < N; y++) {
+            for (int x = 0; x < N; x++) {
+                if (board.CanPlaceDisk(x, y)) {
+                    board.PlaceDisk(x, y);
+                    return true;
+                }
             }
         }
 
-        return place;
+        return false;
     }
 };
 }
