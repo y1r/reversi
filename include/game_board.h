@@ -126,8 +126,8 @@ private:
         return 0 <= x && x < N && 0 <= y && y < N;
     }
 
-    static inline constexpr std::array<int, 8> dxs = {-1, 0, 1, 1, 1, 0, -1, -1};
-    static inline constexpr std::array<int, 8> dys = {-1, -1, -1, 0, 1, 1, 1, 0};
+    static inline constexpr std::array<int, 8> dxs = {{-1, 0, 1, 1, 1, 0, -1, -1}};
+    static inline constexpr std::array<int, 8> dys = {{-1, -1, -1, 0, 1, 1, 1, 0}};
 
     std::array<std::array<Disk, N>, N> board_;
     Disk next_disk_ = Disk::BLACK;
