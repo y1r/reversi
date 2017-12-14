@@ -21,7 +21,7 @@ void PrintGameBoard(const reversi::GameBoard<N> &game_board) {
                     break;
                 case Disk::WHITE:cout << "○";
                     break;
-                case Disk::EMPTY:cout << " ";
+                case Disk::EMPTY:cout << "x";
                     break;
             }
         }
