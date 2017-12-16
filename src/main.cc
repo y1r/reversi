@@ -1,6 +1,6 @@
 #include <iostream>
-#include <utils.h>
 
+#include "utils.h"
 #include "algorithms/alpha_beta.h"
 #include "algorithms/user.h"
 #include "algorithms/random.h"

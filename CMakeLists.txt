@@ -24,9 +24,6 @@ set(SOURCE_FILES
         ${source_files}
         )
 
-message("${include_files}")
-message("${source_files}")
-
 include_directories(${include_dir})
 
 add_executable(reversi ${SOURCE_FILES})
