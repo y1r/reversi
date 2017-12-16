@@ -1,5 +1,5 @@
-#ifndef REVERSI_MINIMAX_H
-#define REVERSI_MINIMAX_H
+#ifndef REVERSI_MINI_MAX_H
+#define REVERSI_MINI_MAX_H
 
 #include <cstddef>
 #include "game_board.h"
@@ -71,4 +71,4 @@ private:
 }
 }
 
-#endif //REVERSI_MINIMAX_H
+#endif //REVERSI_MINI_MAX_H
