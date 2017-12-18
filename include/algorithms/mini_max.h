@@ -3,17 +3,18 @@
 
 #include <cstddef>
 #include "game_board.h"
+#include "base.h"
 
 namespace reversi {
 namespace algorithms {
 
 template<size_t N>
-class MiniMax {
+class MiniMax : public Base<N> {
     using Position = std::pair<int, int>;
 
 public:
     MiniMax(int depth) : depth_(depth) {}
-    bool operator()(GameBoard<N> &game_board) {
+    bool operator()(GameBoard<N> &game_board) override {
         GameBoard<N> max_board;
 
         my_disk_ = game_board.next_disk();

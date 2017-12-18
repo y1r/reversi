@@ -1,10 +1,14 @@
 #include <iostream>
+#include <array>
+#include <getopt.h>
+
+#include "algorithms/base.h"
+#include "algorithms/alpha_beta.h"
+#include "algorithms/mini_max.h"
+#include "algorithms/random.h"
+#include "algorithms/user.h"
 
 #include "utils.h"
-#include "algorithms/alpha_beta.h"
-#include "algorithms/user.h"
-#include "algorithms/random.h"
-#include "algorithms/mini_max.h"
 
 using namespace std;
 #define N 8
@@ -23,6 +27,9 @@ double GetDurationOfExecution(LAMBDA &&executable) {
 template<size_t BOARD_SIZE, typename Player1, typename Player2>
 void Game(Player1 &&p1, Player2 &&p2) {
     using namespace reversi;
+
+    std::cout << "BLACK:●" << std::endl;
+    std::cout << "WHITE:○" << std::endl;
 
     GameBoard<BOARD_SIZE> board;
     utils::PrintGameBoard(board);
@@ -56,9 +63,57 @@ void Game(Player1 &&p1, Player2 &&p2) {
     std::cout << "White_elapsed:" << elapsed_p2 << "[s]" << endl;
 }
 
-int main(void) {
-//    Game<N>(reversi::algorithms::MiniMax<N, 6>(), reversi::algorithms::MiniMax<N, 7>());
-    Game<N>(reversi::algorithms::MiniMax<N>(7), reversi::algorithms::AlphaBeta<N>(6));
+void usage(int argc, char *argv[]) {
+    const char *str =
+        " [BLACK] [WHITE]\n"
+            "[BLACK|WHITE]\n"
+            "\t -a [search_depth]; alphabeta-method\n"
+            "\t -m [search_depth]; minimax-method\n"
+            "\t -u; user\n"
+            "\t -r; random\n";
 
-    return 0;
+    std::cout << argv[0] << str << std::endl;
+}
+
+int main(int argc, char *argv[]) {
+    int player_i = 0;
+    std::array<reversi::algorithms::Base<N> *, 2> player = {{nullptr, nullptr}};
+    const char *optstring = "a:m:ur";
+    int opt;
+    opterr = 0;
+
+    while ((opt = getopt(argc, argv, optstring)) != -1 && player_i != 2) {
+        switch (opt) {
+            case 'a': {
+                int depth = atoi(optarg);
+                assert(depth >= 1);
+                player[player_i] = new reversi::algorithms::AlphaBeta<N>(depth);
+                break;
+            }
+            case 'm': {
+                int depth = atoi(optarg);
+                assert(depth >= 1);
+                player[player_i] = new reversi::algorithms::MiniMax<N>(depth);
+                break;
+            }
+            case 'u':player[player_i] = new reversi::algorithms::User<N>();
+                break;
+            case 'r':player[player_i] = new reversi::algorithms::Random<N>();
+                break;
+            default:usage(argc, argv);
+                return EXIT_FAILURE;
+        }
+        player_i++;
+    }
+
+    if (player_i != 2) {
+        usage(argc, argv);
+        return EXIT_FAILURE;
+    }
+
+    Game<N>(*player[0], *player[1]);
+
+    delete player[0], player[1];
+
+    return EXIT_SUCCESS;
 }

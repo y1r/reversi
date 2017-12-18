@@ -6,9 +6,9 @@
 namespace reversi {
 namespace algorithms {
 template<size_t N>
-class Random {
+class Random : public Base<N> {
 public:
-    bool operator()(GameBoard<N> &board) {
+    bool operator()(GameBoard<N> &board) override {
         // TODO(y1r): 合法手を差分で管理したほうが良い？
         for (int y = 0; y < N; y++) {
             for (int x = 0; x < N; x++) {
