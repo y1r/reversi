@@ -52,6 +52,9 @@ public:
     auto next_disk() const { return next_disk_; }
 
     bool CanPlaceDisk(const int x, const int y) const {
+        if (!InRange(x, y) || board_[x][y] != Disk::EMPTY)
+            return false;
+
         for (int i = 0; i < dxs.size(); i++) {
             auto xx = x + dxs[i];
             auto yy = y + dys[i];
