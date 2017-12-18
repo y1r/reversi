@@ -7,17 +7,18 @@
 namespace reversi {
 namespace algorithms {
 
-template<size_t N, size_t DEPTH>
+template<size_t N>
 class MiniMax {
     using Position = std::pair<int, int>;
 
 public:
+    MiniMax(int depth) : depth_(depth) {}
     bool operator()(GameBoard<N> &game_board) {
         GameBoard<N> max_board;
 
         my_disk_ = game_board.next_disk();
 
-        auto result = Search(game_board, DEPTH, false);
+        auto result = Search(game_board, depth_, false);
         bool found = result.second != Position(-1, -1);
 
         if (found)
@@ -28,6 +29,7 @@ public:
 
 private:
     Disk my_disk_;
+    const int depth_;
 
     auto Search(const GameBoard<N> &game_board, int remain_depth, bool min_mode) {
         int good_score = min_mode ? INT_MAX : INT_MIN;

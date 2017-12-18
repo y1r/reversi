@@ -58,7 +58,7 @@ void Game(Player1 &&p1, Player2 &&p2) {
 
 int main(void) {
 //    Game<N>(reversi::algorithms::MiniMax<N, 6>(), reversi::algorithms::MiniMax<N, 7>());
-    Game<N>(reversi::algorithms::MiniMax<N, 7>(), reversi::algorithms::AlphaBeta<N, 8>());
+    Game<N>(reversi::algorithms::MiniMax<N>(7), reversi::algorithms::AlphaBeta<N>(6));
 
     return 0;
 }
