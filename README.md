@@ -5,7 +5,7 @@ Implementation of Reversi/Othello Game in C++14.
 - Mini-Max Method
 - Alpha-Beta Method
 - User (stdin)
-- Random (select first-accetable 
+- Random (select first-placeable disk) 
 
 ## How to Use
 ```sh
@@ -25,3 +25,6 @@ make
          -u; user
          -r; random
 ```
+
+## LICENSE
+Apache License Version 2.0
